@@ -124,7 +124,7 @@ class Interpolant:
 if __name__ == "__main__":
     # Test case taken from the book with a = 2, b = 3, ...
     ccnf = ColorfulCNF(
-        [CNF([[-2, 5], [-2, 3, -5], [-2, -3], [2, -3], [2, 3, 5]]), CNF([[3, -5]])])
+        [CNF([[-2, 5], [-2, 3, -5]]), CNF([[-2, -3], [2, -3], [2, 3, 5]]), CNF([[3, -5]])])
     interpolant = Interpolant("proof.lrat", ccnf)
     clauses = interpolant.cnf
     if Clause({-3}) in clauses and Clause({5}) in clauses and len(clauses) == 2:
