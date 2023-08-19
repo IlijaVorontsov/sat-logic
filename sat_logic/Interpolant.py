@@ -60,13 +60,15 @@ class ProofClause(LabeledClause):
 
 
 class Interpolant:
-    def __init__(self, prooffile: str, colorful_cnf: ColorfulCNF, assumptions=[]) -> None:
+    def __init__(self, colorful_cnf: ColorfulCNF) -> None:
         self.colorful_cnf = colorful_cnf
         self.cnf_clauses = list(colorful_cnf)
         self.cnf_clauses.insert(0, Clause())  # Shift the clauses by 1
-        self.color_variables = colorful_cnf.color[1].variables
+        self.cnf_clauses.insert(0, Clause(1)) # Constant true
+        self.color_variables = colorful_cnf.color[2].variables
 
         self.solver = ProofSolver()
+        self.solver.add_clause(Clause(1))
         self.solver.add_formula(colorful_cnf)
         self.solver.solve()
 
@@ -86,11 +88,11 @@ class Interpolant:
         if index not in self.proof:  # Root clause
             clause = self.cnf_clauses[index]
             label = None
-            if clause in self.colorful_cnf.color[1]:
+            if clause in self.colorful_cnf.color[2]:
                 label = CNF([Clause({1})], keep_minimal=True)
             else:
                 label = CNF({clause.intersection(
-                    self.colorful_cnf.color[1].variables)}, keep_minimal=True)
+                    self.color_variables)}, keep_minimal=True)
             self.proof[index] = LabeledClause(clause, label, index)
             return self.proof[index]
 
