@@ -1,4 +1,7 @@
 build
 dist
 sat_logic.egg-info
-.DS_Store
+*.DS_Store*
+*__pycache__
+*.lrat
+test
