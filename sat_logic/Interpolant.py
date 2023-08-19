@@ -73,7 +73,7 @@ class Interpolant:
         self.solver.solve()
 
         self.proof = dict()
-        with open(prooffile, "r") as proof_file:
+        with open("proof.lrat", "r") as proof_file:
             for line in proof_file:
                 if line.split()[1] != "d":
                     proof_clause = ProofClause(line)
