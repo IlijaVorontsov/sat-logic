@@ -5,3 +5,5 @@ This package contains the following objects:
 - `ColoredLogic`: a class for representing colored logic objects
 - `Interpolants`: a class for representing interpolants
 
+Install with:
+`pip install git+ssh://git@github.com/IlijaVorontsov/sat-logic.git`
