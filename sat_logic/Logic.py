@@ -191,6 +191,19 @@ class CNF:
 
         if keep_minimal:
             self.distributeUnits()
+            self.removeImplied()
+
+    def removeImplied(self):
+        new_clauses = set()
+        for clause1 in self.clauses:
+            implied = False
+            for clause2 in self.clauses:
+                if clause1 is not clause2 and clause2.implies(clause1):
+                    implied = True
+                    break
+            if not implied:
+                new_clauses.add(clause1)
+        self.clauses = new_clauses
 
     @property
     def isTrivialValid(self):
@@ -289,9 +302,19 @@ class CNF:
         for c in self.clauses:
             if c.implies(clause):
                 return True
-        return False   
+        return False
+    
+    def __eq__(self, other):
+        assert isinstance(other, CNF)
+        return self.clauses == other.clauses
         
 if __name__ == "__main__":
-    assert len(~CNF({Clause([2, 3, 4]), Clause([5, 6, 7]), Clause([8,9,10])})) == 27
     assert CNF(Clause()).isTrivialUnsat
+
+    # inversion
+    assert ~CNF({Clause([2,3]), Clause([4,5])}) == CNF({Clause([-2,-4]), Clause([-2,-5]), Clause([-3,-4]), Clause([-3,-5])})
+    assert len(~CNF({Clause([2, 3, 4]), Clause([5, 6, 7]), Clause([8,9,10])})) == 27
     assert not CNF({Clause([2]), Clause([-2,3]), Clause([3,4])}).isTrivialUnsat
+    
+    # removeImplied
+    assert CNF({Clause([2,3]), Clause([2,3,4]), Clause([3,4])} ,keep_minimal=True) == CNF({Clause([2,3]), Clause([3,4])})
