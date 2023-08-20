@@ -1,6 +1,9 @@
 import ctypes
 import os
-from sat_logic.Logic import CNF, Clause, Literal
+try:
+    from sat_logic.Logic import CNF, Clause, Literal
+except ModuleNotFoundError:
+    from Logic import CNF, Clause, Literal
 
 SAT = 10
 UNSAT = 20

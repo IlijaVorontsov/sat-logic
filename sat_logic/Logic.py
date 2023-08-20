@@ -278,7 +278,18 @@ class CNF:
         for clause in self.clauses:
             vars.update(clause.variables)
         return vars
-                
+    
+    def implies(self, other):
+        for clause in other.clauses:
+            if not self.implies_clause(clause):
+                return False
+        return True
+
+    def implies_clause(self, clause):
+        for c in self.clauses:
+            if c.implies(clause):
+                return True
+        return False   
         
 if __name__ == "__main__":
     assert len(~CNF({Clause([2, 3, 4]), Clause([5, 6, 7]), Clause([8,9,10])})) == 27
